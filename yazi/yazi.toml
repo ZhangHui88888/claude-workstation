@@ -1,0 +1,25 @@
+# Markdown: rendered preview in the right pane; Enter reads full-window (glow);
+# Shift+O offers read / edit in micro / edit in Typora (Windows).
+
+# Preview via the official piper.yazi plugin (yazi-rs/plugins). Link targets are dropped
+# ([text](url) -> text) so long encoded paths don't clutter the preview.
+[[plugin.prepend_previewers]]
+url = "*.md"
+run = 'piper -- sed -E "s/!?\[([^]]*)\]\([^)]*\)/\1/g" "$1" | CLICOLOR_FORCE=1 glow -w=$w -s=dark -'
+
+[opener]
+read = [
+  { run = "mdread -p %s1", block = true, desc = "Read (glow)" },
+]
+micro = [
+  { run = "micro %s", block = true, desc = "Edit in terminal (micro)" },
+]
+# wslview (wslu) opens the file with its Windows default app; .md is associated with Typora.
+typora = [
+  { run = "wslview %s1", orphan = true, desc = "Edit in Typora (Windows)" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.md", use = [ "read", "micro", "typora" ] },
+]

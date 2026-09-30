@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Render a Markdown file with glow, dropping link targets ([text](url) -> text) so long
+# encoded paths don't clutter the output. Usage: mdread [-p] [-w WIDTH] FILE
+#   -p  page the result with less (glow's own pager probes the terminal and stalls ~10s
+#       inside herdr/tmux, so it is not used). Inside a herdr pane, the pane is zoomed to
+#       fill the window while reading and restored on exit.
+pager=0; width=
+while [ $# -gt 1 ]; do
+  case $1 in -p) pager=1; shift ;; -w) width=$2; shift 2 ;; *) break ;; esac
+done
+render() { sed -E 's/!?\[([^]]*)\]\([^)]*\)/\1/g' "$1" | CLICOLOR_FORCE=1 glow -s dark ${width:+-w "$width"} -; }
+
+if [ "$pager" = 1 ]; then
+  if [ -n "$HERDR_PANE_ID" ] && command -v herdr >/dev/null; then
+    zoomed=$(herdr pane layout --pane "$HERDR_PANE_ID" 2>/dev/null | jq -r '.result.layout.zoomed')
+    if [ "$zoomed" = false ]; then
+      herdr pane zoom --pane "$HERDR_PANE_ID" --on >/dev/null 2>&1
+      trap 'herdr pane zoom --pane "$HERDR_PANE_ID" --off >/dev/null 2>&1' EXIT
+      sleep 0.15 # let the terminal resize before measuring it
+    fi
+  fi
+  [ -z "$width" ] && width=$(( $(stty size 2>/dev/null </dev/tty | cut -d' ' -f2 || tput cols) - 4 ))
+  render "$1" | less -R
+else
+  render "$1"
+fi

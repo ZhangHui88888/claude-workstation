@@ -1,0 +1,40 @@
+onboarding = false
+# herdr config (WSL ~/.config/herdr/config.toml -> this file). Defaults: `herdr --default-config`.
+# Apply changes live with `herdr server reload-config` or prefix+shift+r.
+
+[theme]
+name = "catppuccin"
+
+# Plain right-click = herdr pane menu; ctrl+right-click goes to the app in the pane
+# (herdr-sidebar's file menu with "Open with Default App").
+[ui]
+right_click_passthrough_modifier = "ctrl"
+
+# File explorer: herdr-sidebar (auto-opens beside each workspace; alt+s focuses / hides it).
+# Change review: herdr-file-viewer (changed files open as diffs; opened only on demand).
+[[keys.command]]
+key = "prefix+alt+s"
+type = "plugin_action"
+command = "herdr-sidebar.open-sidebar"
+description = "Toggle herdr-sidebar (file tree + git)"
+
+[[keys.command]]
+key = "prefix+alt+v"
+type = "plugin_action"
+command = "herdr-file-viewer.open-file-viewer"
+description = "Open herdr-file-viewer in a split"
+
+# prefix (ctrl+b) then alt+f: browse files and read docs in a popup; alt+g: git.
+[[keys.command]]
+key = "prefix+alt+f"
+type = "popup"
+command = "yazi"
+width = "85%"
+height = "85%"
+
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+width = "85%"
+height = "85%"
