@@ -1,4 +1,4 @@
-# Desktop project panel: pick a project (and optionally a tri-design step), then open it in the Windows herdr
+# Desktop "tri-design" panel: pick a project (and optionally a tri-design step), then open it in the Windows herdr
 # tab of WezTerm as a workspace with Claude. The desktop shortcut (install-project-panel.ps1) runs this hidden.
 #   -Snapshot <png>  render the panel off-screen to a PNG and exit, for checking the layout.
 param([string]$Snapshot)
@@ -60,7 +60,7 @@ function Wait-HerdrServer {
 # --- form ---
 $bg = [Drawing.Color]::FromArgb(30, 30, 46); $panel = [Drawing.Color]::FromArgb(49, 50, 68)
 $fg = [Drawing.Color]::FromArgb(205, 214, 244); $dim = [Drawing.Color]::FromArgb(166, 173, 200)
-$accent = [Drawing.Color]::FromArgb(203, 166, 247)
+$accent = [Drawing.Color]::FromArgb(137, 180, 250)  # blue, to match tri-design.ico
 $font = New-Object Drawing.Font('Microsoft YaHei UI', 10)
 
 # Layout is in 96-dpi units; the scale settings must land before ClientSize and the controls (a hashtable
@@ -70,7 +70,7 @@ $form.SuspendLayout()
 $form.AutoScaleDimensions = [Drawing.SizeF]::new(96, 96)
 $form.AutoScaleMode = 'Dpi'
 $form.ClientSize = [Drawing.Size]::new(520, 560)
-$form.Text = 'Claude 项目'; $form.StartPosition = 'CenterScreen'; $form.FormBorderStyle = 'FixedSingle'
+$form.Text = 'tri-design'; $form.Icon = [Drawing.Icon]::new((Join-Path $PSScriptRoot 'tri-design.ico')); $form.StartPosition = 'CenterScreen'; $form.FormBorderStyle = 'FixedSingle'
 $form.MaximizeBox = $false; $form.BackColor = $bg; $form.ForeColor = $fg; $form.Font = $font; $form.KeyPreview = $true
 function Add-Control($type, $props) { $c = New-Object "Windows.Forms.$type" -Property $props; $form.Controls.Add($c); $c }
 
@@ -166,7 +166,7 @@ function Open-Project([string]$Dir) {
         Save-Recent $Dir
         $form.Close()
     } catch {
-        [Windows.Forms.MessageBox]::Show("打开失败：$_", 'Claude 项目', 'OK', 'Error') | Out-Null
+        [Windows.Forms.MessageBox]::Show("打开失败：$_", 'tri-design', 'OK', 'Error') | Out-Null
         $form.Enabled = $true; Set-Status '双击项目或按回车打开'
     }
 }
