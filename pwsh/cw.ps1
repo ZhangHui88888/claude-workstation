@@ -28,7 +28,7 @@ function Resolve-CwProject {
     Write-Warning "没有匹配 '$Project' 的项目"
 }
 
-$CwSteps = 'audit', 'benchmark', 'build', 'fix', 'item-review', 'new', 'skills', 'strategy-review'
+$CwSteps = 'audit', 'benchmark', 'build', 'fix', 'item-review', 'new', 'next', 'skills', 'strategy-review'
 
 # A leading tri-design step name becomes /tri-design:<step>; anything else is sent as typed.
 function ConvertTo-CwPrompt {

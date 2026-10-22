@@ -80,7 +80,7 @@ $list = Add-Control ListBox @{ Location = '16,72'; Size = '488,280'; BackColor =
 $list.ItemHeight = [Math]::Ceiling($font.Height * 1.2)  # pixels at the current DPI, so a fixed number would clip descenders
 Add-Control Label @{ Text = '打开后先执行'; Location = '16,364'; AutoSize = $true; ForeColor = $dim } | Out-Null
 $step = Add-Control ComboBox @{ Location = '16,388'; Size = '488,28'; DropDownStyle = 'DropDownList'; BackColor = $panel; ForeColor = $fg; FlatStyle = 'Flat' }
-$note = Add-Control TextBox @{ Location = '16,426'; Size = '488,28'; PlaceholderText = '附加说明（可选）：接在命令后面；选“直接对话”时就是第一句话'; BackColor = $panel; ForeColor = $fg; BorderStyle = 'FixedSingle' }
+$note = Add-Control TextBox @{ Location = '16,426'; Size = '488,28'; PlaceholderText = '附加说明（可选）：接在命令后面；选“普通对话”时就是第一句话'; BackColor = $panel; ForeColor = $fg; BorderStyle = 'FixedSingle' }
 $browse = Add-Control Button @{ Text = '其他文件夹…'; Location = '16,472'; Size = '150,36'; FlatStyle = 'Flat'; BackColor = $panel; ForeColor = $fg }
 $open = Add-Control Button @{ Text = '打开'; Location = '384,472'; Size = '120,36'; FlatStyle = 'Flat'; BackColor = $accent; ForeColor = $bg }
 $status = Add-Control Label @{ Text = '双击项目或按回车打开'; Location = '16,524'; Size = '488,24'; ForeColor = $dim }
@@ -89,7 +89,8 @@ $form.AcceptButton = $open
 $form.ResumeLayout($false)
 
 $steps = @(
-    @{ Label = '直接对话'; Step = '' }
+    @{ Label = '普通对话（不走 tri-design）'; Step = '' }
+    @{ Label = '走 tri-design：接着上次的步骤'; Step = 'next' }
     @{ Label = 'benchmark · 对标调研，产出三份设计文档'; Step = 'benchmark' }
     @{ Label = 'strategy-review · 战略复盘，定方向与技术栈'; Step = 'strategy-review' }
     @{ Label = 'item-review · 逐条审核'; Step = 'item-review' }
