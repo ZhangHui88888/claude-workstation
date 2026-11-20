@@ -8,6 +8,7 @@ input=$(cat)
 hookdir=$(cd "$(dirname "$0")" && pwd)
 cd "${CLAUDE_PROJECT_DIR:-$PWD}" 2>/dev/null || exit 0
 [ -f .claude/verify.sh ] || exit 0
+grep -q "^# stop-hook: off" .claude/verify.sh && exit 0
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || exit 0
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -n "$sid" ] || exit 0

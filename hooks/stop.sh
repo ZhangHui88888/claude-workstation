@@ -12,6 +12,8 @@ sid=$(printf '%s' "$input" | jq -r '.session_id // "none"' 2>/dev/null)
 transcript=$(printf '%s' "$input" | jq -r '.transcript_path // empty' 2>/dev/null)
 verify=.claude/verify.sh
 [ -f "$verify" ] && gd=$(git rev-parse --git-dir 2>/dev/null) || exit 0
+# A project that runs its check elsewhere (before a commit, at a merge) says so in the script: "# stop-hook: off".
+grep -q "^# stop-hook: off" "$verify" && exit 0
 
 turn="/tmp/claude-verify-$sid.turn"    # the tree as the turn began; turn-start.sh writes it when absent
 seen="/tmp/claude-verify-$sid.seen"    # transcript lines already covered by a clean stop
