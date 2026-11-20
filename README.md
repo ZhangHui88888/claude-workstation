@@ -15,7 +15,7 @@ single place to edit.
 | `CLAUDE.md` | WSL `~/.claude/CLAUDE.md` (symlink). Imports the machine-only `~/.claude/CLAUDE.local.md` |
 | `CLAUDE.local.example.md` | template for that machine-only file (paths, services, secret folders) |
 | `commands/` | WSL `~/.claude/commands` (symlink) |
-| `hooks/` | WSL `~/.claude/settings.json` hooks (SessionStart, UserPromptSubmit, Notification, Stop) |
+| `hooks/` | WSL `~/.claude/settings.json` hooks (SessionStart, Notification) |
 | `herdr/config.toml` | WSL `~/.config/herdr/config.toml` (file symlink; the dir itself must stay on ext4 for the socket) |
 | `wezterm/wezterm.lua` | Windows `%USERPROFILE%\.wezterm.lua` (dofile); WezTerm opens straight into herdr |
 | `yazi/yazi.toml` | WSL `~/.config/yazi/yazi.toml` (symlink); yazi is the Alt+F popup. Markdown preview uses the official `piper.yazi` plugin + glow; Typora editing goes through `wslview` (Windows default app for `.md` = Typora) |
@@ -29,7 +29,7 @@ Sidebar extras outside this repo: `~/.local/state/herdr/plugins/herdr-sidebar/ed
 and `~/.local/bin/xdg-open` -> `/usr/bin/wslview` so "Open with Default App" reaches Windows.
 
 `cw [dir]` in WSL opens or focuses the herdr workspace for a project.
-Projects opt into the Stop-hook check with an executable `.claude/verify.sh`.
+A project's self-check, if it has one, is `.claude/verify.sh` (run with bash); no hook runs it.
 Background images: put them in `E:\wallpapers`.
 
 ## Status
