@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Stop hook: if the project has a .claude/verify.sh and the working tree (ignoring .ai-* files)
-# changed since the last passing run and since this session began, run it. On failure, exit 2 so Claude keeps
+# changed since the last passing run and since this turn began, run it. On failure, exit 2 so Claude keeps
 # working (max 3 attempts per session), then send a failure toast. No toast on success.
 input=$(cat)
 hookdir=$(cd "$(dirname "$0")" && pwd)
@@ -11,9 +11,9 @@ verify=.claude/verify.sh
 if [ -f "$verify" ] && gd=$(git rev-parse --git-dir 2>/dev/null); then
   . "$hookdir/verify-fp.sh"
   fp=$(verify_fp)
-  # The tree is as it was when this session began (session-start.sh): the session changed nothing,
-  # so there is nothing of its own to verify (a question asked in a fresh worktree, say).
-  [ "$(cat "/tmp/claude-verify-$sid.start" 2>/dev/null)" = "$fp" ] && exit 0
+  # The tree is as it was when this turn began (turn-start.sh): the turn changed nothing, so there is
+  # nothing of its own to verify (a question asked after another session committed to the same folder, say).
+  [ "$(cat "/tmp/claude-verify-$sid.turn" 2>/dev/null)" = "$fp" ] && exit 0
   if [ "$(cat "$gd/claude-verify.ok" 2>/dev/null)" != "$fp" ]; then
     count_file="/tmp/claude-verify-$sid.count"
     if out=$(timeout 900 bash "$verify" 2>&1); then
